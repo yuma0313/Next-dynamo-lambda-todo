@@ -1,5 +1,6 @@
 import Layout from "../../components/Layout";
 import { Todo } from "../../components/todo";
+import Form from "../../components/form";
 import { GetStaticProps } from "next";
 
 type TodoType = {
@@ -12,11 +13,14 @@ export default function Home({ todos }: { todos: TodoType[] }) {
   //Layoutコンポーネントにタイトルを渡し、{children}にはページの内容を渡す
   return (
     <Layout title="Home">
+      <div className="">
+      <Form />
       <ul>
         {todos.map((todo) => (
-          <Todo key={todo.id} name={todo.name} deadline={todo.deadline} />
+          <Todo key={todo.id} id={todo.id} name={todo.name} deadline={todo.deadline} />
         ))}
       </ul>
+      </div>
     </Layout>
   )
 }
@@ -32,10 +36,10 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const data = await response.json();
 
-    return {
-      props: {
-        todos: data.todos,
-      },
-      revalidate: 60, // ISR: 60秒ごとに再生成
-    };
+  return {
+    props: {
+      todos: data.todos,
+    },
+    revalidate: 60, // ISR: 60秒ごとに再生成
+  };
 }
